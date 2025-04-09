@@ -1,0 +1,207 @@
+import java.text.*;
+import java.util.*;
+
+public class Main {
+    
+    public static void main(String[] args) {
+       
+       String []ProdVeg = {"Carrot", "Potato","Cabbage","Raddish","Onion"};
+       String []ProdFruit = {"Apple","Banana","Grapes","Strawberry","Mango"};
+       String []Cate={"Check out","Vegetable","Fruits"};
+        
+       int []Price1= {15,20,50,70,15};
+       int []Price2= {20,60,90,85,60};
+        
+       calc Calc= new calc(ProdVeg,ProdFruit,Cate,Price1,Price2);
+       
+       Calc.printCate();
+       
+    }
+}
+class calc{
+       Scanner scan=new Scanner(System.in);
+   
+       String []ProdVeg;
+       String []ProdFruit;
+       String []Cate;
+       
+       DecimalFormat df = new DecimalFormat("0.00");
+   
+       int []Price1;
+       int []Price2;
+       
+       int choice=0,quantity,choiceProd;
+       double total=0,discount,tax;
+       boolean Loop=true;
+   
+   
+    calc(String[]veg, String[]fruit,String []cate,int []price1,int[]price2){
+       
+        this.ProdVeg=veg;
+        this.ProdFruit=fruit;
+        this.Cate=cate;
+        this.Price1=price1;
+        this.Price2=price2;
+    }
+   
+    public void printCate(){
+       
+       for(int a=0;a<Cate.length;a++){
+          System.out.println((a)+") "+Cate[a]);
+       }
+       
+       choiceCate();
+    }
+   
+    public void choiceCate(){
+       
+       choice=scan.nextInt();
+       
+       switch(choice){
+          case 0: break;
+          case 1: break;
+          case 2: break;
+          default:
+             System.out.println("Invalid Input try again");
+             choiceCate();
+             break;
+       } 
+       
+       if(choice==0){
+          setDiscount();
+          setTax();
+          printer.Print();
+          printAmount();
+       }else{
+          printProd();
+       }
+       
+    }
+   
+   public void printProd(){
+      
+      switch(choice){
+         case 1:
+      for(int i = 0; i<ProdVeg.length;i++){
+         System.out.println((i+1)+") "+ ProdVeg[i]+" "+ Price1[i]);
+      }
+         
+         do{
+            
+         System.out.println("What Product?");
+         choiceProd=scan.nextInt();
+            
+         }
+         while(choice>5);
+         
+         System.out.println("How many?"); 
+         quantity=scan.nextInt();
+         
+         total+= (quantity*Price1[choiceProd-1]);
+         printer print= new printer(ProdVeg[choiceProd-1],quantity,Price1[choiceProd-1],total);
+         print.setReceipt();
+         break;
+         
+         case 2:
+         
+      for(int i = 0; i<ProdVeg.length;i++){
+         System.out.println((i+1)+") "+ ProdFruit[i]+" "+ Price2[i]);
+      }
+         do{
+            
+         System.out.println("What Product?");   
+         
+         choiceProd=scan.nextInt();
+         }
+         
+         while(choice>5);
+         
+         System.out.println("How many?");   
+         quantity=scan.nextInt();
+         
+         total+= (quantity*Price2[choiceProd-1]);
+         print= new printer(ProdFruit[choiceProd-1],quantity,Price2[choiceProd-1],total);
+         print.setReceipt();
+         break;
+      }
+      
+      printCate();
+   }
+   
+   public double setTotal(){
+      return total;
+   }
+   
+   public double setDiscount(){
+      discount=0.10*total;
+      return discount;
+   }
+   
+   public double setTax(){
+      tax=(total-discount)*0.05;
+      return tax;
+   }
+   
+   public void printAmount(){
+      System.out.println("Total:                            "+ total);
+      System.out.println("Discount(10%):                    "+ df.format(setDiscount()));
+      System.out.println("Discounted Amount:                "+df.format((total-discount)));
+      System.out.println("Tax(5%):                          "+df.format(setTax()));
+      System.out.println("Taxed Amount:                     "+df.format((tax+(total-discount))));
+      System.out.println("\n\n\n      Thank you for Shopping ");
+    
+   }
+      
+}
+class printer {
+   
+   String name;
+   int quantity;
+   int price;
+   double total;
+   static List<printer>receipt= new ArrayList<>();
+   
+   String asd=" ";
+   String x="              ";
+         
+     printer(String a,int b, int c,double d){
+        this.name=a;
+        this.quantity=b;
+        this.price=c;
+        this.total=c*b;
+        for(int ling= name.length();ling<10;ling++){
+          x+=asd;
+        }
+     }
+     public String getName(){
+        return name;
+     }
+     public int getQuantity(){
+        return quantity;
+     }
+     public int getPrice(){
+        return price;
+     }
+     public double getTotal(){
+        return total;
+     }
+     public String toString(){
+        return name +x + quantity +"    " + price+"   "+total;
+     }
+     void setReceipt(){
+        receipt.add(new printer(getName(),getQuantity(),getPrice(),getTotal()));
+     }
+     static void Print(){
+        System.out.println("\n\n\nYour Reciept\n\n\n");
+        for(printer rec:receipt){
+          System.out.println(rec);
+        }
+     }
+}
+
+    
+    
+
+    
+    
+    
